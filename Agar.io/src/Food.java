@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class Enemy {
+public class Food {
 	private int x, y;
 	private int vx, vy = 0;
 	private int rad = (int)(Math.random()*50+1);
@@ -11,36 +11,16 @@ public class Enemy {
 	Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	int i;
 	
-	public Enemy() {
-		//enemy moves randomly because vx and vy are some random nonzero value between -3 and 3
-		while (vx == 0) {
-			i = (int)(Math.random()*6)+1;
-			if (i >= 4) {
-				vx = (int)(.5*(i-(int)(rad/13)));
-				//^ bigger it is, the slower it is
-			}
-			else if (i <4) {
-				vx = (int)(.5*(-i+(int)(rad/17)));
-			}
-		}
-		while (vy == 0) {
-			i = (int)(Math.random()*6)+1;
-			if (i >= 4) {
-				vy = -i+(int)(rad/13);
-				//^ bigger it is, the slower it is
-			}
-			else if (i <4) {
-				vy = -i+(int)(rad/17);
-			}
-		}
+	public Food() {
+		
 		//spawn enemy randomly
 		x = (int)(Math.random()*800);
 		y = (int)(Math.random()*600);
 		
 		//random color
-		int red = colour(20);
+		int red = colour(100)+156;
 		int green = colour(20);
-		int blue = colour(256);
+		int blue = colour(20);
 		color = new Color(red, green, blue);
 	}
 
@@ -60,12 +40,20 @@ public class Enemy {
 	}
 	
 	public void collide() {
-		if (x<= 0 || x >= 600) {
+		if (x<= 0 || x >= 800) {
 			vx = -vx;
 		}
-		if (y<= 0 || y >= 800) {
+		if (y<= 0 || y >=600) {
 			vy = -vy;
 		}
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
 	}
 	
 	public void update() {

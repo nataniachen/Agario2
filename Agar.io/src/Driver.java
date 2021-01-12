@@ -10,16 +10,19 @@ import javax.swing.*;
 import javax.swing.Timer;
 public class Driver extends JPanel implements MouseListener, ActionListener{
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	ArrayList<Food> food = new ArrayList<Food>();
 	Cell Player = new Cell();
-	
+
 	public void paint (Graphics g) {
-		g.fillOval(50,  50, 100, 200);
-		g.drawString("Mass", 100, 300);
 		super.paintComponent(g);
 		Player.paint(g);
 		for (Enemy e: enemies) {
 			e.paint(g);
 			e.collide();
+		}
+		eat();
+		for (Food f: food) {
+			f.paint(g);
 		}
 		Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	}
@@ -35,6 +38,9 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		for (int i = 0; i < 10; i++) {
 			enemies.add(new Enemy());
 		}
+		for (int i = 0; i < 20; i++) {
+			food.add(new Food());
+		}
 		Timer t = new Timer(16, this);
 		t.start();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,6 +49,17 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 
 	public int getRadius (Enemy ez) {
 		return 5;
+	}
+	
+	public void eat() {
+		for (int i = 0; i < food.size(); i++) {
+		if (Player.getX() == (food.get(i)).getX() && Player.getY() == food.get(i).getY()) {
+			Player.addMass(1);
+			food.remove(i);
+			i--;
+			System.out.println(Player.getMass());
+		}
+		}
 	}
 	//test
 	//if (follow) {
