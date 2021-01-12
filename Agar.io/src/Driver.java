@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,6 +44,12 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	public int getRadius (Enemy ez) {
 		return 5;
 	}
+	
+	//if (follow) {
+		//vx = (int) (MouseInfo.getPointerInfo().getLocation().getX());
+		//vy = (int) (MouseInfo.getPointerInfo().getLocation().getY());
+		//System.out.println(vx + "" + vy);
+	//}
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
