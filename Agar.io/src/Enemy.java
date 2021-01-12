@@ -16,11 +16,11 @@ public class Enemy {
 		while (vx == 0) {
 			i = (int)(Math.random()*6)+1;
 			if (i >= 4) {
-				vx = i-(int)(rad/13);
+				vx = (int)(.5*(i-(int)(rad/13)));
 				//^ bigger it is, the slower it is
 			}
 			else if (i <4) {
-				vx = -i+(int)(rad/17);
+				vx = (int)(.5*(-i+(int)(rad/17)));
 			}
 		}
 		while (vy == 0) {

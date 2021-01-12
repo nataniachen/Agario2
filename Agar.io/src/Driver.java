@@ -9,10 +9,13 @@ import javax.swing.*;
 import javax.swing.Timer;
 public class Driver extends JPanel implements MouseListener, ActionListener{
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	Cell Player = new Cell();
 	
 	public void paint (Graphics g) {
 		g.fillOval(50,  50, 100, 200);
+		g.drawString("Mass", 100, 300);
 		super.paintComponent(g);
+		Player.paint(g);
 		for (Enemy e: enemies) {
 			e.paint(g);
 			e.collide();
@@ -28,7 +31,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		JFrame frame = new JFrame("Agar.io");
 		frame.setSize(800, 600);
 		frame.add(this);
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 10; i++) {
 			enemies.add(new Enemy());
 		}
 		Timer t = new Timer(16, this);
@@ -37,6 +40,9 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		frame.setVisible(true);
 	}
 
+	public int getRadius (Enemy ez) {
+		return 5;
+	}
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
