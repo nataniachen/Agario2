@@ -44,7 +44,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	public int getRadius (Enemy ez) {
 		return 5;
 	}
-	
+	//test
 	//if (follow) {
 		//vx = (int) (MouseInfo.getPointerInfo().getLocation().getX());
 		//vy = (int) (MouseInfo.getPointerInfo().getLocation().getY());
