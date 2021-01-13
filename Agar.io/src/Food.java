@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 public class Food {
 	private int x, y;
 	private int vx, vy = 0;
-	private int rad = (int)(Math.random()*50+1);
+	private int rad = (int)(Math.random()*10+1);
 	private int mass;
 	private Color color;
 	Rectangle world = new Rectangle(-500, -500, 2000, 2000);

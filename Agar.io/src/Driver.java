@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Rectangle;
@@ -12,18 +13,22 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	ArrayList<Food> food = new ArrayList<Food>();
 	Cell Player = new Cell();
+	Font font = new Font("Arial", Font.BOLD, 35);
 
 	public void paint (Graphics g) {
 		super.paintComponent(g);
-		Player.paint(g);
+		g.setFont(font);
+		g.drawString("Remaining Enemies: " + enemies.size(), 10, 50);
+	
+		eat();
 		for (Enemy e: enemies) {
 			e.paint(g);
 			e.collide();
 		}
-		eat();
 		for (Food f: food) {
 			f.paint(g);
 		}
+		Player.paint(g);
 		Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	}
 	
@@ -35,7 +40,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		JFrame frame = new JFrame("Agar.io");
 		frame.setSize(800, 600);
 		frame.add(this);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 20; i++) {
 			enemies.add(new Enemy());
 		}
 		for (int i = 0; i < 20; i++) {
@@ -52,10 +57,10 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	}
 	
 	public void eat() {
-		for (int i = 0; i < food.size(); i++) {
-		if (Player.getX() == (food.get(i)).getX() && Player.getY() == food.get(i).getY()) {
-			Player.addMass(1);
-			food.remove(i);
+		for (int i = 0; i < enemies.size(); i++) {
+		if ((enemies.get(i)).getX() >= Player.getX()-Player.getMass()/2 && enemies.get(i).getX() <= Player.getX() + Player.getMass()/2 && (enemies.get(i)).getY() >= Player.getY() - Player.getMass()/2 && enemies.get(i).getY() <= Player.getY() + Player.getMass()/2) {
+			Player.addMass((int)(enemies.get(i).getRad())/2);
+			enemies.remove(i);
 			i--;
 			System.out.println(Player.getMass());
 		}

@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Cell {
 private int x, y;
@@ -29,9 +30,15 @@ public int getMass() {
 	return mass;
 }
 
+public void drawCenteredCircle(Graphics g, int x, int y, int r) {
+	  x = x-(r/2);
+	  y = y-(r/2);
+	  g.fillOval(x,y,r,r);
+	}
+
 public void paint (Graphics g) {
 	g.setColor(color);;
-	g.fillOval(x,  y,  mass,  mass);
+	drawCenteredCircle(g, x , y, mass);
 	/* have the enemy object bounce off of the rectangle
 	 * borders using the helper methods (getters) for
 	 * min x max x etc

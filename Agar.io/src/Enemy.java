@@ -68,8 +68,19 @@ public class Enemy {
 		}
 	}
 	
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+	
+	public int getRad() {
+		return rad;
+	}
+	
 	public void update() {
-		//make velocities related to radius
 		x+=vx;
 		y+=vy;
 	}
