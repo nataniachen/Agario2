@@ -1,6 +1,8 @@
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +15,15 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	ArrayList<Food> food = new ArrayList<Food>();
 	Cell Player = new Cell();
-	Font font = new Font("Arial", Font.BOLD, 35);
-
+	Font font = new Font("Arial", Font.BOLD, 30);
+	Point mouse = MouseInfo.getPointerInfo().getLocation();
+	
 	public void paint (Graphics g) {
+		mouse = MouseInfo.getPointerInfo().getLocation();
 		super.paintComponent(g);
 		g.setFont(font);
-		g.drawString("Remaining Enemies: " + enemies.size(), 10, 50);
+		g.drawString("Remaining Enemies: " + enemies.size(), 10, 40);
+		g.drawString("Remaining Food: " + food.size(), 10, 70);
 	
 		eat();
 		for (Enemy e: enemies) {
@@ -26,6 +31,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			e.collide();
 		}
 		for (Food f: food) {
+			f.setX((int)(mouse.getX()));
 			f.paint(g);
 		}
 		Player.paint(g);
@@ -65,6 +71,14 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			System.out.println(Player.getMass());
 		}
 		}
+		for (int i = 0; i < food.size(); i++) {
+			if ((food.get(i)).getX() >= Player.getX()-Player.getMass()/2 && food.get(i).getX() <= Player.getX() + Player.getMass()/2 && (food.get(i)).getY() >= Player.getY() - Player.getMass()/2 && food.get(i).getY() <= Player.getY() + Player.getMass()/2) {
+				Player.addMass(5);
+				food.remove(i);
+				i--;
+				System.out.println(Player.getMass());
+			}
+			}
 	}
 	//test
 	//if (follow) {
