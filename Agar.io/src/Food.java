@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+//read over movement stuff
 public class Food {
 	private int x, y;
 	private int vx, vy = 0;
