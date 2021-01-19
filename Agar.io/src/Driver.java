@@ -17,6 +17,13 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	Cell Player = new Cell();
 	Font font = new Font("Arial", Font.BOLD, 30);
 	Point mouse = MouseInfo.getPointerInfo().getLocation();
+	double mX = MouseInfo.getPointerInfo().getLocation().getX();
+	double mY = MouseInfo.getPointerInfo().getLocation().getY();
+	double pX = mX+Player.getMass()/2;
+	double pY = mY+Player.getMass()/2;
+	double dx = mX-pY;
+	double dy = mY-pY;
+	double theta = Math.atan(dx/dy);
 	
 	public void paint (Graphics g) {
 		mouse = MouseInfo.getPointerInfo().getLocation();
@@ -80,12 +87,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			}
 			}
 	}
-	//test
-	//if (follow) {
-		//vx = (int) (MouseInfo.getPointerInfo().getLocation().getX());
-		//vy = (int) (MouseInfo.getPointerInfo().getLocation().getY());
-		//System.out.println(vx + "" + vy);
-	//}
+
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
