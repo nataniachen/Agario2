@@ -5,23 +5,24 @@ import java.awt.Rectangle;
 //read over movement stuff
 public class Food {
 	private int x, y;
-	private int vx, vy = 0;
-	private int rad = (int)(Math.random()*10+1);
-	private int mass;
+	private double vx, vy = 0;
+	private int rad = (int)(Math.random()*10+5);
 	private Color color;
 	Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	int i;
 	
 	public Food() {
+		vx = 0;
+		vy = 0;
 		
 		//spawn enemy randomly
 		x = (int)(Math.random()*800);
 		y = (int)(Math.random()*600);
 		
 		//random color
-		int red = colour(100)+156;
-		int green = colour(20);
-		int blue = colour(20);
+		int red = colour(20);
+		int green = colour(100)+156;
+		int blue = colour(100)+156;
 		color = new Color(red, green, blue);
 	}
 
@@ -30,7 +31,6 @@ public class Food {
 	}
 	
 	public void paint (Graphics g) {
-		update();
 		g.setColor(color);;
 		g.fillOval(x,  y,  rad,  rad);
 		/* have the enemy object bounce off of the rectangle
@@ -40,13 +40,8 @@ public class Food {
 		 */
 	}
 	
-	public void collide() {
-		if (x<= 0 || x >= 800) {
-			vx = -vx;
-		}
-		if (y<= 0 || y >=600) {
-			vy = -vy;
-		}
+	public int getMass() {
+		return rad;
 	}
 	
 	public int getX() {
@@ -65,8 +60,13 @@ public class Food {
 		this.y = y;
 	}
 	
-	public void update() {
-		x+=vx;
-		y+=vy;
+	public void updateX(double value) {
+		vx = value;
+		x += vx;
+	}
+	
+	public void updateY(double value) {
+		vy = value;
+		y += vy;
 	}
 }

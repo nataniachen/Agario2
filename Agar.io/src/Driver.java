@@ -24,9 +24,16 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	double dx = mX-pY;
 	double dy = mY-pY;
 	double theta = Math.atan(dx/dy);
-	
+	double playerVelocity = 150/Player.getMass()+1;
+			
 	public void paint (Graphics g) {
-		mouse = MouseInfo.getPointerInfo().getLocation();
+		//updating mouse location
+		mX = MouseInfo.getPointerInfo().getLocation().getX();
+		mY = MouseInfo.getPointerInfo().getLocation().getY();
+		
+		//updating player velocity
+		playerVelocity = 150/Player.getMass()+1;
+		
 		super.paintComponent(g);
 		g.setFont(font);
 		g.drawString("Remaining Enemies: " + enemies.size(), 10, 40);
@@ -34,14 +41,38 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	
 		eat();
 		for (Enemy e: enemies) {
+			if (mX > 400) {
+				e.updateX(-playerVelocity);
+			}
+			if (mX < 400) {
+				e.updateX(playerVelocity);
+			}
+			if (mY> 300) {
+				e.updateY(-playerVelocity);
+			}
+			if (mY< 300) {
+				e.updateY(playerVelocity);
+			}
 			e.paint(g);
 			e.collide();
 		}
 		for (Food f: food) {
-			f.setX((int)(mouse.getX()));
+			if (mX > 400) {
+				f.updateX(-playerVelocity);
+			}
+			if (mX < 400) {
+				f.updateX(playerVelocity);
+			}
+			if (mY> 300) {
+				f.updateY(-playerVelocity);
+			}
+			if (mY< 300) {
+				f.updateY(playerVelocity);
+			}
 			f.paint(g);
 		}
 		Player.paint(g);
+		
 		Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	}
 	
@@ -72,7 +103,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	public void eat() {
 		for (int i = 0; i < enemies.size(); i++) {
 		if ((enemies.get(i)).getX() >= Player.getX()-Player.getMass()/2 && enemies.get(i).getX() <= Player.getX() + Player.getMass()/2 && (enemies.get(i)).getY() >= Player.getY() - Player.getMass()/2 && enemies.get(i).getY() <= Player.getY() + Player.getMass()/2) {
-			Player.addMass((int)(enemies.get(i).getRad())/2);
+			Player.addMass((int)(enemies.get(i).getRad())/5);
 			enemies.remove(i);
 			i--;
 			System.out.println(Player.getMass());
@@ -80,7 +111,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		}
 		for (int i = 0; i < food.size(); i++) {
 			if ((food.get(i)).getX() >= Player.getX()-Player.getMass()/2 && food.get(i).getX() <= Player.getX() + Player.getMass()/2 && (food.get(i)).getY() >= Player.getY() - Player.getMass()/2 && food.get(i).getY() <= Player.getY() + Player.getMass()/2) {
-				Player.addMass(5);
+				Player.addMass(food.get(i).getMass()/3);
 				food.remove(i);
 				i--;
 				System.out.println(Player.getMass());

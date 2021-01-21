@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 
 public class Cell {
 private int x, y;
-private Color color = new Color(50, 250, 150);
+private int i = 0;
+private boolean goingUp = true;
 private boolean alive;
-private int xv, yv;
 private int mass = 50;
 
 public Cell() {
@@ -36,8 +36,33 @@ public void drawCenteredCircle(Graphics g, int x, int y, int r) {
 	  g.fillOval(x,y,r,r);
 	}
 
+public Color colour(int b) {
+	if (goingUp) {
+		colorUp();
+	}
+	else {
+		colorDown();
+	}
+	System.out.println(b);
+	return new Color(255, 200, b);
+}
+
+public void colorUp() {
+	i++;
+	if (i == 255) {
+		goingUp = false;
+	}
+}
+
+public void colorDown() {
+	i--;
+	if (i == 0) {
+		goingUp = true;
+	}
+}
+
 public void paint (Graphics g) {
-	g.setColor(color);;
+	g.setColor(colour(i));;
 	drawCenteredCircle(g, x , y, mass);
 	/* have the enemy object bounce off of the rectangle
 	 * borders using the helper methods (getters) for
