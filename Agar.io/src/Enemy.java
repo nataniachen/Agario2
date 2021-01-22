@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 public class Enemy {
 	private int x, y;
 	private int vx, vy = 0;
-	private int rad = (int)(Math.random()*50+1);
+	private int rad = (int)(Math.random()*150+1);
 	private Color color;
 	Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	int i;
@@ -32,9 +32,15 @@ public class Enemy {
 				vy = (int)(.5*(-i+(int)(rad/17)));
 			}
 		}
-		//spawn enemy randomly
+		//spawn enemy in random spot that's not where player spawns. gives player 50 room for movement.
 		x = (int)(Math.random()*800 +1);
+		while (x<=475 && x>=325) {
+			x = (int)(Math.random()*800 +1);
+		}
 		y = (int)(Math.random()*600 +1);
+		while (x>= 225 && x<=375) {
+			x = (int)(Math.random()*800 +1);
+		}
 		
 		//random color
 		int red = colour(156)+100;

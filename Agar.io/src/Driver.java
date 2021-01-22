@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
@@ -25,8 +26,10 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	double dy = mY-pY;
 	double theta = Math.atan(dx/dy);
 	double playerVelocity = 150/Player.getMass()+1;
+	Color c = new Color(100, 200, 100);
 			
 	public void paint (Graphics g) {
+
 		//updating mouse location
 		mX = MouseInfo.getPointerInfo().getLocation().getX();
 		mY = MouseInfo.getPointerInfo().getLocation().getY();
@@ -35,11 +38,11 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		playerVelocity = 150/Player.getMass()+1;
 		
 		super.paintComponent(g);
-		g.setFont(font);
-		g.drawString("Remaining Enemies: " + enemies.size(), 10, 40);
-		g.drawString("Remaining Food: " + food.size(), 10, 70);
-	
+		
+		//eating
 		eat();
+		eatPlayer();
+		
 		for (Enemy e: enemies) {
 			if (mX > 400) {
 				e.updateX(-playerVelocity);
@@ -71,7 +74,20 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			}
 			f.paint(g);
 		}
+		
+		//status
+		g.setColor(c);
+		g.setFont(font);
+		g.drawString("Remaining Enemies: " + enemies.size(), 15, 40);
+		g.drawString("Remaining Food: " + food.size(), 15, 70);
+		
+		//draw player
+		if (Player.living()) {
 		Player.paint(g);
+		}
+		else {
+			g.drawString("You've lost!", 300, 275);
+		}
 		
 		Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	}
@@ -84,10 +100,10 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		JFrame frame = new JFrame("Agar.io");
 		frame.setSize(800, 600);
 		frame.add(this);
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 10; i++) {
 			enemies.add(new Enemy());
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 40; i++) {
 			food.add(new Food());
 		}
 		Timer t = new Timer(16, this);
@@ -102,7 +118,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	
 	public void eat() {
 		for (int i = 0; i < enemies.size(); i++) {
-		if ((enemies.get(i)).getX() >= Player.getX()-Player.getMass()/2 && enemies.get(i).getX() <= Player.getX() + Player.getMass()/2 && (enemies.get(i)).getY() >= Player.getY() - Player.getMass()/2 && enemies.get(i).getY() <= Player.getY() + Player.getMass()/2) {
+		if ((enemies.get(i)).getX() >= Player.getX()-Player.getMass()/2 && enemies.get(i).getX() <= Player.getX() + Player.getMass()/2 && (enemies.get(i)).getY() >= Player.getY() - Player.getMass()/2 && enemies.get(i).getY() <= Player.getY() + Player.getMass()/2 && Player.getMass() >= enemies.get(i).getRad()) {
 			Player.addMass((int)(enemies.get(i).getRad())/5);
 			enemies.remove(i);
 			i--;
@@ -117,6 +133,14 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 				System.out.println(Player.getMass());
 			}
 			}
+	}
+	
+	public void eatPlayer() {
+		for (int i = 0; i < enemies.size(); i++) {
+			if (enemies.get(i).getX() < Player.getX()+Player.getMass()/2 && enemies.get(i).getX()+enemies.get(i).getRad() > Player.getX()+Player.getMass()*(3/2) && enemies.get(i).getY() < Player.getY()+Player.getMass()/2 && enemies.get(i).getY()+enemies.get(i).getRad() > Player.getY()+Player.getMass()*(3/2) && Player.getMass() < enemies.get(i).getRad()) {
+				Player.setLiving(false);
+			}
+		}
 	}
 
 	@Override

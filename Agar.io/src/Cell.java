@@ -6,12 +6,13 @@ public class Cell {
 private int x, y;
 private int i = 0;
 private boolean goingUp = true;
-private boolean alive;
-private int mass = 50;
+private boolean living = true;
+private int mass;
 
 public Cell() {
 	x = 400;
 	y = 300;
+	mass = 50;
 }
 
 public int getX() {
@@ -28,6 +29,14 @@ public void addMass(int a) {
 
 public int getMass() {
 	return mass;
+}
+
+public boolean living() {
+	return living;
+}
+
+public void setLiving(boolean bool) {
+	living = bool;
 }
 
 public void drawCenteredCircle(Graphics g, int x, int y, int r) {
