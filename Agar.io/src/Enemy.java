@@ -7,7 +7,6 @@ public class Enemy {
 	private int vx, vy = 0;
 	private int rad = (int)(Math.random()*150+1);
 	private Color color;
-	Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	int i;
 	
 	public Enemy() {
@@ -64,15 +63,6 @@ public class Enemy {
 		 */
 	}
 	
-	public void collide() {
-		if (x<= 0 || x >= 600) {
-			vx = -vx;
-		}
-		if (y<= 0 || y >= 800) {
-			vy = -vy;
-		}
-	}
-	
 	public int getX() {
 		return x;
 	}
@@ -91,6 +81,22 @@ public class Enemy {
 	
 	public void updateY(double value) {
 		y+= value;
+	}
+	
+	public void updateVx(int vx) {
+		this.vx = vx;
+	}
+	
+	public void updateVy(int vy) {
+		this.vy = vy;
+	}
+	
+	public int getVx() {
+		return vx;
+	}
+	
+	public int getVy() {
+		return vy;
 	}
 	
 	public void update() {

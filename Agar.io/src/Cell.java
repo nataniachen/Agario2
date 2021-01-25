@@ -52,7 +52,6 @@ public Color colour(int b) {
 	else {
 		colorDown();
 	}
-	System.out.println(b);
 	return new Color(255, 200, b);
 }
 

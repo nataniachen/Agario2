@@ -16,19 +16,18 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	ArrayList<Food> food = new ArrayList<Food>();
 	Cell Player = new Cell();
+	World world = new World();
 	Font font = new Font("Arial", Font.BOLD, 30);
 	Point mouse = MouseInfo.getPointerInfo().getLocation();
 	double mX = MouseInfo.getPointerInfo().getLocation().getX();
 	double mY = MouseInfo.getPointerInfo().getLocation().getY();
 	double pX = mX+Player.getMass()/2;
 	double pY = mY+Player.getMass()/2;
-	double dx = mX-pY;
-	double dy = mY-pY;
-	double theta = Math.atan(dx/dy);
 	double playerVelocity = 150/Player.getMass()+1;
 	Color c = new Color(100, 200, 100);
 			
 	public void paint (Graphics g) {
+		if (Player.living()) {
 
 		//updating mouse location
 		mX = MouseInfo.getPointerInfo().getLocation().getX();
@@ -57,7 +56,12 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 				e.updateY(playerVelocity);
 			}
 			e.paint(g);
-			e.collide();
+			if (e.getX()<= world.getRx() || e.getX() >= world.getRx()+2000) {
+				e.updateVx(-e.getVx());
+			}
+			if (e.getY()<= world.getRy() || e.getY() >= world.getRy()+2000) {
+				e.updateVy(-e.getVy());
+			}
 		}
 		for (Food f: food) {
 			if (mX > 400) {
@@ -74,7 +78,6 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			}
 			f.paint(g);
 		}
-		
 		//status
 		g.setColor(c);
 		g.setFont(font);
@@ -89,7 +92,21 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			g.drawString("You've lost!", 300, 275);
 		}
 		
-		Rectangle world = new Rectangle(-500, -500, 2000, 2000);
+		//rectangle
+		if (mX > 400) {
+			world.updateX(-playerVelocity);
+		}
+		if (mX < 400) {
+			world.updateX(playerVelocity);
+		}
+		if (mY> 300) {
+			world.updateY(-playerVelocity);
+		}
+		if (mY< 300) {
+			world.updateY(playerVelocity);
+		}
+		world.paint(g);
+		}
 	}
 	
 	public static void main (String[] args) {
@@ -110,6 +127,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		t.start();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		
 	}
 
 	public int getRadius (Enemy ez) {
