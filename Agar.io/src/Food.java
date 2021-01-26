@@ -8,7 +8,6 @@ public class Food {
 	private double vx, vy = 0;
 	private int rad = (int)(Math.random()*10+5);
 	private Color color;
-	Rectangle world = new Rectangle(-500, -500, 2000, 2000);
 	int i;
 	
 	public Food() {
@@ -16,8 +15,8 @@ public class Food {
 		vy = 0;
 		
 		//spawn enemy randomly
-		x = (int)(Math.random()*800);
-		y = (int)(Math.random()*600);
+		x = (int)(Math.random()*2000);
+		y = (int)(Math.random()*2000);
 		
 		//random color
 		int red = colour(20);

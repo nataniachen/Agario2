@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 public class Enemy {
 	private int x, y;
 	private int vx, vy = 0;
-	private int rad = (int)(Math.random()*150+1);
+	private int diam = (int)(Math.random()*150+1);
 	private Color color;
 	int i;
 	
@@ -14,31 +14,31 @@ public class Enemy {
 		while (vx == 0) {
 			i = (int)(Math.random()*6)+1;
 			if (i >= 4) {
-				vx = (int)(.5*(i-(int)(rad/13)));
+				vx = (int)(.5*(i-(int)(diam/13)));
 				//^ bigger it is, the slower it is
 			}
 			else if (i <4) {
-				vx = (int)(.5*(-i+(int)(rad/17)));
+				vx = (int)(.5*(-i+(int)(diam/17)));
 			}
 		}
 		while (vy == 0) {
 			i = (int)(Math.random()*6)+1;
 			if (i >= 4) {
-				vy = (int)(.5*(-i+(int)(rad/13)));
+				vy = (int)(.5*(-i+(int)(diam/13)));
 				//^ bigger it is, the slower it is
 			}
 			else if (i <4) {
-				vy = (int)(.5*(-i+(int)(rad/17)));
+				vy = (int)(.5*(-i+(int)(diam/17)));
 			}
 		}
 		//spawn enemy in random spot that's not where player spawns. gives player 50 room for movement.
-		x = (int)(Math.random()*800 +1);
+		x = (int)(Math.random()*2000-diam +2);
 		while (x<=475 && x>=325) {
-			x = (int)(Math.random()*800 +1);
+			x = (int)(Math.random()*2000-diam +2);
 		}
-		y = (int)(Math.random()*600 +1);
+		y = (int)(Math.random()*2000-diam +2);
 		while (x>= 225 && x<=375) {
-			x = (int)(Math.random()*800 +1);
+			x = (int)(Math.random()*2000-diam +2);
 		}
 		
 		//random color
@@ -55,7 +55,7 @@ public class Enemy {
 	public void paint (Graphics g) {
 		update();
 		g.setColor(color);;
-		g.fillOval(x,  y,  rad,  rad);
+		g.fillOval(x,  y,  diam,  diam);
 		/* have the enemy object bounce off of the rectangle
 		 * borders using the helper methods (getters) for
 		 * min x max x etc
@@ -71,8 +71,8 @@ public class Enemy {
 		return y;
 	}
 	
-	public int getRad() {
-		return rad;
+	public int getDiam() {
+		return diam;
 	}
 	
 	public void updateX(double value) {

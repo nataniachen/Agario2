@@ -15,12 +15,12 @@ public Cell() {
 	mass = 50;
 }
 
-public int getX() {
-	return x;
+public int getAccurateX() {
+	return x-mass/2;
 }
 
-public int getY() {
-	return y;
+public int getAccurateY() {
+	return y-mass/2;
 }
 
 public void addMass(int a) {

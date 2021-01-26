@@ -17,17 +17,17 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	ArrayList<Food> food = new ArrayList<Food>();
 	Cell Player = new Cell();
 	World world = new World();
-	Font font = new Font("Arial", Font.BOLD, 30);
+	Font font = new Font("Arial", Font.BOLD, 15);
 	Point mouse = MouseInfo.getPointerInfo().getLocation();
 	double mX = MouseInfo.getPointerInfo().getLocation().getX();
 	double mY = MouseInfo.getPointerInfo().getLocation().getY();
-	double pX = mX+Player.getMass()/2;
-	double pY = mY+Player.getMass()/2;
-	double playerVelocity = 150/Player.getMass()+1;
+	double playerVelocity = 150/Player.getMass()+2;
 	Color c = new Color(100, 200, 100);
+	int sum = 0;
 			
 	public void paint (Graphics g) {
-		if (Player.living()) {
+		g.setColor(c);
+		if (Player.living() && insideRect()) {
 
 		//updating mouse location
 		mX = MouseInfo.getPointerInfo().getLocation().getX();
@@ -56,10 +56,10 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 				e.updateY(playerVelocity);
 			}
 			e.paint(g);
-			if (e.getX()<= world.getRx() || e.getX() >= world.getRx()+2000) {
+			if (e.getX()<= world.getRx() || e.getX() + e.getDiam() >= world.getRx()+2000) {
 				e.updateVx(-e.getVx());
 			}
-			if (e.getY()<= world.getRy() || e.getY() >= world.getRy()+2000) {
+			if (e.getY()<= world.getRy() || e.getY() + e.getDiam() >= world.getRy()+2000) {
 				e.updateVy(-e.getVy());
 			}
 		}
@@ -78,18 +78,20 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			}
 			f.paint(g);
 		}
+		
 		//status
-		g.setColor(c);
+		if (sum < 250) {
+			g.setFont(new Font("Arial", Font.BOLD, 30));
+			g.drawString("Avoid being eaten, and avoid the borders!", 190, 50);
+			sum++;
+		}
 		g.setFont(font);
-		g.drawString("Remaining Enemies: " + enemies.size(), 15, 40);
-		g.drawString("Remaining Food: " + food.size(), 15, 70);
+		g.drawString("Remaining Enemies: " + enemies.size(), 790, 720);
+		g.drawString("Remaining Food: " + food.size(), 790, 740);
 		
 		//draw player
 		if (Player.living()) {
 		Player.paint(g);
-		}
-		else {
-			g.drawString("You've lost!", 300, 275);
 		}
 		
 		//rectangle
@@ -107,6 +109,10 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		}
 		world.paint(g);
 		}
+		else {
+			g.setFont(new Font("Arial", Font.BOLD, 50));
+			g.drawString("You've lost!", 340, 390);
+		}
 	}
 	
 	public static void main (String[] args) {
@@ -115,12 +121,12 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	
 	public Driver() {
 		JFrame frame = new JFrame("Agar.io");
-		frame.setSize(800, 600);
+		frame.setSize(1000, 800);
 		frame.add(this);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 20; i++) {
 			enemies.add(new Enemy());
 		}
-		for (int i = 0; i < 40; i++) {
+		for (int i = 0; i < 75; i++) {
 			food.add(new Food());
 		}
 		Timer t = new Timer(16, this);
@@ -136,15 +142,15 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	
 	public void eat() {
 		for (int i = 0; i < enemies.size(); i++) {
-		if ((enemies.get(i)).getX() >= Player.getX()-Player.getMass()/2 && enemies.get(i).getX() <= Player.getX() + Player.getMass()/2 && (enemies.get(i)).getY() >= Player.getY() - Player.getMass()/2 && enemies.get(i).getY() <= Player.getY() + Player.getMass()/2 && Player.getMass() >= enemies.get(i).getRad()) {
-			Player.addMass((int)(enemies.get(i).getRad())/5);
+		if ((enemies.get(i)).getX() >= Player.getAccurateX() && enemies.get(i).getX() <= Player.getAccurateX() + Player.getMass() && (enemies.get(i)).getY() >= Player.getAccurateY() && enemies.get(i).getY() <= Player.getAccurateY() + Player.getMass() && Player.getMass() >= enemies.get(i).getDiam()) {
+			Player.addMass((int)(enemies.get(i).getDiam())/5);
 			enemies.remove(i);
 			i--;
 			System.out.println(Player.getMass());
 		}
 		}
 		for (int i = 0; i < food.size(); i++) {
-			if ((food.get(i)).getX() >= Player.getX()-Player.getMass()/2 && food.get(i).getX() <= Player.getX() + Player.getMass()/2 && (food.get(i)).getY() >= Player.getY() - Player.getMass()/2 && food.get(i).getY() <= Player.getY() + Player.getMass()/2) {
+			if ((food.get(i)).getX() >= Player.getAccurateX() && food.get(i).getX() <= Player.getAccurateX() + Player.getMass() && (food.get(i)).getY() >= Player.getAccurateY() && food.get(i).getY() <= Player.getAccurateY() + Player.getMass()) {
 				Player.addMass(food.get(i).getMass()/3);
 				food.remove(i);
 				i--;
@@ -155,10 +161,18 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	
 	public void eatPlayer() {
 		for (int i = 0; i < enemies.size(); i++) {
-			if (enemies.get(i).getX() < Player.getX()+Player.getMass()/2 && enemies.get(i).getX()+enemies.get(i).getRad() > Player.getX()+Player.getMass()*(3/2) && enemies.get(i).getY() < Player.getY()+Player.getMass()/2 && enemies.get(i).getY()+enemies.get(i).getRad() > Player.getY()+Player.getMass()*(3/2) && Player.getMass() < enemies.get(i).getRad()) {
+			if (enemies.get(i).getX() < Player.getAccurateX() && enemies.get(i).getX()+enemies.get(i).getDiam() > Player.getAccurateX()+Player.getMass() && enemies.get(i).getY() < Player.getAccurateY() && enemies.get(i).getY()+enemies.get(i).getDiam() > Player.getAccurateY()+Player.getMass() && Player.getMass() < enemies.get(i).getDiam()) {
 				Player.setLiving(false);
 			}
 		}
+	}
+	
+	//ensuring the player does not go out of bounds
+	public boolean insideRect() {
+		if (Player.getAccurateX() >= world.getRx() && Player.getAccurateX()+Player.getMass() <= world.getRx()+2000 && Player.getAccurateY() >= world.getRy() && Player.getAccurateY()+Player.getMass() <= world.getRy()+2000) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
