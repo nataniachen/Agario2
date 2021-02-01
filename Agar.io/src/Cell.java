@@ -10,9 +10,9 @@ private boolean living = true;
 private int mass;
 
 public Cell() {
-	x = 400;
-	y = 300;
 	mass = 50;
+	x = 500-mass/2;
+	y = 400-mass/2;
 }
 
 public int getAccurateX() {

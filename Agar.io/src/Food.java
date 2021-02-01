@@ -15,8 +15,8 @@ public class Food {
 		vy = 0;
 		
 		//spawn enemy randomly
-		x = (int)(Math.random()*2000);
-		y = (int)(Math.random()*2000);
+		x = (int)(Math.random()*(2000-rad)+rad);
+		y = (int)(Math.random()*(2000-rad)+rad);
 		
 		//random color
 		int red = colour(20);

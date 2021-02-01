@@ -17,6 +17,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 	ArrayList<Food> food = new ArrayList<Food>();
 	Cell Player = new Cell();
 	World world = new World();
+	boolean win;
 	Font font = new Font("Arial", Font.BOLD, 15);
 	Point mouse = MouseInfo.getPointerInfo().getLocation();
 	double mX = MouseInfo.getPointerInfo().getLocation().getX();
@@ -27,7 +28,7 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			
 	public void paint (Graphics g) {
 		g.setColor(c);
-		if (Player.living() && insideRect()) {
+		if (Player.living() && insideRect() && !win) {
 
 		//updating mouse location
 		mX = MouseInfo.getPointerInfo().getLocation().getX();
@@ -43,16 +44,16 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		eatPlayer();
 		
 		for (Enemy e: enemies) {
-			if (mX > 400) {
+			if (mX > 500) {
 				e.updateX(-playerVelocity);
 			}
-			if (mX < 400) {
+			if (mX < 500) {
 				e.updateX(playerVelocity);
 			}
-			if (mY> 300) {
+			if (mY> 400) {
 				e.updateY(-playerVelocity);
 			}
-			if (mY< 300) {
+			if (mY< 400) {
 				e.updateY(playerVelocity);
 			}
 			e.paint(g);
@@ -64,16 +65,16 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			}
 		}
 		for (Food f: food) {
-			if (mX > 400) {
+			if (mX > 500) {
 				f.updateX(-playerVelocity);
 			}
-			if (mX < 400) {
+			if (mX < 500) {
 				f.updateX(playerVelocity);
 			}
-			if (mY> 300) {
+			if (mY> 400) {
 				f.updateY(-playerVelocity);
 			}
-			if (mY< 300) {
+			if (mY< 400) {
 				f.updateY(playerVelocity);
 			}
 			f.paint(g);
@@ -95,23 +96,27 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 		}
 		
 		//rectangle
-		if (mX > 400) {
+		if (mX > 500) {
 			world.updateX(-playerVelocity);
 		}
-		if (mX < 400) {
+		if (mX < 500) {
 			world.updateX(playerVelocity);
 		}
-		if (mY> 300) {
+		if (mY> 400) {
 			world.updateY(-playerVelocity);
 		}
-		if (mY< 300) {
+		if (mY< 400) {
 			world.updateY(playerVelocity);
 		}
 		world.paint(g);
 		}
-		else {
+		else if (!win){
 			g.setFont(new Font("Arial", Font.BOLD, 50));
 			g.drawString("You've lost!", 340, 390);
+		}
+		else {
+			g.setFont(new Font("Arial", Font.BOLD, 50));
+			g.drawString("You've won!", 360, 390);
 		}
 	}
 	
@@ -147,6 +152,9 @@ public class Driver extends JPanel implements MouseListener, ActionListener{
 			enemies.remove(i);
 			i--;
 			System.out.println(Player.getMass());
+		}
+		if (enemies.size() == 0) {
+			win = true;
 		}
 		}
 		for (int i = 0; i < food.size(); i++) {

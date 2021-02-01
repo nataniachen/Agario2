@@ -32,13 +32,13 @@ public class Enemy {
 			}
 		}
 		//spawn enemy in random spot that's not where player spawns. gives player 50 room for movement.
-		x = (int)(Math.random()*2000-diam +2);
+		x = (int)(Math.random()*2000-(150+diam)) +150;
 		while (x<=475 && x>=325) {
-			x = (int)(Math.random()*2000-diam +2);
+			x = (int)(Math.random()*2000-(150+diam)) +150;
 		}
-		y = (int)(Math.random()*2000-diam +2);
+		y = (int)(Math.random()*2000-(150+diam)) +150;
 		while (x>= 225 && x<=375) {
-			x = (int)(Math.random()*2000-diam +2);
+			x = (int)(Math.random()*2000-(150+diam)) +150;
 		}
 		
 		//random color
